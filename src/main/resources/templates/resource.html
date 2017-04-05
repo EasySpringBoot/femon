@@ -1,0 +1,79 @@
+ 
+#include("header.html")
+
+<div class="row">
+    <div class="col-sm-4">
+        <a href="/resource/create" class="btn btn-large btn-block btn-info femon-guide">增加监控机器</a>
+    </div>
+
+</div>
+
+<hr width="96%">
+<!--tab开始-->
+<div class="form-group">
+    <table class="table table-hover femon-table">
+        <thead>
+        <tr>
+            <th width="50">编号</th>
+            <th width="80">状态</th>
+            <th width="150">名称</th>
+            <th width="150">IP地址</th>
+            <th width="120">监控</th>
+            <th width="80">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        #set($count = 0)
+        #foreach ($c in $resourceList)
+        #set($count = $count + 1)
+        <tr>
+            <td>$count</td>
+            #if($c.state==1)
+                <td><p class="btn btn-success">正常</p></td>
+            #else
+                <td><p class="btn btn-danger">失败</p></td>
+            #end
+            <td>$!c.name</td>
+            <td>$!c.ip</td>
+<td><a href="/resourceDataChart/$c.id">曲线图</a></td>
+            <td><a href="/resource/edit?serverId=$c.id"  class="btn btn-info">编辑</a></td>
+        </tr>
+        <div id="output-content$c.id" style="display: none;">
+        </div>
+        #end
+        </tbody>
+    </table>
+</div>
+
+
+
+<!--begin:分页-->
+<div class="i-create-page">
+    <ul class="pagination">
+        #foreach($pageIndex in $pageIndexList)
+        #set($displayName = $pageIndex + 1)
+        #if( $pageIndex == $currentPage )
+        <li><a style="background-color: #2aabd2; color: #ffffff;"
+               href="/?page=$pageIndex">$displayName</a></li>
+        #else
+        <li><a href="/?page=$pageIndex">$displayName</a></li>
+        #end
+        #end
+    </ul>
+</div>
+<!--end:分页-->
+
+#include("footer.html")
+<script>
+    $(function() {
+        initLeftNavSelection();
+    });
+
+    function initLeftNavSelection(){
+        $("#femon-home").removeClass("active");
+        $("#femon-service").removeClass("active");
+        $("#femon-process").removeClass("active");
+        $("#femon-resource").addClass("active");
+    }
+ 
+</script>

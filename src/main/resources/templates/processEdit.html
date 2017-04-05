@@ -1,0 +1,79 @@
+#include("header.html")
+<div class="nav-guide">
+	<a href="/process">进程管理</a>&nbsp;>&nbsp;增加监控进程
+</div>
+<hr width="96%">
+<div class="row i-create-form">
+
+	<div class="form-group i-create-subcontent">
+		<div class="row i-create-subcontent-row form-inline">
+			<label class="label-text">机器名称</label> 
+			<select id="select-server" name="p-server" class="form-control">
+
+			</select>
+		</div>
+
+		<div class="row i-create-subcontent-row form-inline">
+			<label class="label-text">进程名称</label> <input type="text"
+				class="form-control" name="p-name" value=$!process.name>
+
+		</div>
+
+	</div>
+	<!-- end: 服务配置 -->
+	<a class="btn btn-success" id="bt-process-editSave">保&nbsp;&nbsp;&nbsp;存</a>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	/* 动态异步加载服务器列表ajax json */
+	$.ajax({
+		type : "get",//使用get方法访问后台
+		dataType : "json",//返回json格式的数据
+		url : "/process/serverList",//要访问的后台地址
+		data : "",//要发送的数据
+		complete : function() {
+			$("#loading").hide();
+		},//AJAX请求完成时隐藏loading提示
+		success : function(data) {//msg为返回的数据，在这里做数据绑定
+			$.each(data, function(key, value) {
+				$("#select-server").append(
+						"<option value='" + value.id + "'>" + value.name
+								+ "</option>");
+			});
+		    // ajax异步调用成功之后，选中对应的select
+			$("#select-server").val('$serverId');
+		}
+	});
+	
+});
+
+
+//alert('$serverId');
+//$("#select-server").val('$serverId');
+//$("#select-server").find("option[value='$serverId']").css("selected",true);
+
+
+$("#bt-process-editSave").on('click', function() {
+	var serverId = parseInt($("select[name='p-server']").val());
+	var processName = $("input[name='p-name']").val();
+
+	//alert(serverId + "-" + processName);
+	
+	$.post('/process/editPost', {
+		processId : $!process.id,
+		serverId : serverId,
+		name : processName
+	}, function(data) {
+		if (data)
+			window.location.href = '/process';
+		else
+			alert("保存失败");
+	});
+});
+
+	 
+</script>
+
+
+#include("footer.html")

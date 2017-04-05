@@ -1,0 +1,80 @@
+#include("header.html")
+<div>
+	<h5>
+		<a href="/">服务管理</a>
+	</h5>
+	<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto">
+		loading...
+	</div>
+</div>
+#include("footer.html")
+<script type="text/javascript">
+	$(document).ready(function() {
+		drawState(); //initialize
+		setInterval("drawState()", 600000); //refresh every 10 mins
+	});
+
+	function drawState() {
+		var id = $serviceId;
+		var serviceName = "$serviceName";
+		var arrData = [];
+
+		$.get(
+			"/service/" + id + "/historyList",
+			function(data) {
+				$.each(data, function(key, value) {
+					var arrContent = [];
+					arrContent.push(value.sampleTime);  //x
+					arrContent.push(value.state);  //y
+					arrData.push(arrContent);
+				});
+				$('#container').highcharts(
+				{
+					chart : {
+						type : 'areaspline' //图表类型 line, spline, area, areaspline, column, bar, pie , column，scatter
+					},
+					title : {
+						text : '<b>' + serviceName + '</b>'
+					},
+					xAxis : {
+						categories : [],
+						title : {
+							text : '采样时间'
+						}
+					//x轴坐标标题  labels:纵柱标尺
+
+					},
+					yAxis : {
+						title : {
+							text : '实时监控状态'
+						},
+						tickPositions : [ 0, 1 ]
+					},
+
+					tooltip : {
+						pointFormat : '{series.name} 状态为 <b>{point.y:,.0f}</b><br/>'
+					},
+					plotOptions : {
+						area : {
+							pointStart : 1,
+							marker : {
+								enabled : false,
+								symbol : 'circle',
+								radius : 2,
+								states : {
+									hover : {
+										enabled : true
+									}
+								}
+							}
+						}
+					},
+					series : [ {
+						name : '$serviceName (1-正常 0-失败) ',
+						data : arrData
+					} ]
+				});
+			}, 'json');
+	}
+</script>
+

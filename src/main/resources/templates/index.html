@@ -1,0 +1,22 @@
+#include("header.html")
+<div class="nav-guide">
+	<h2>欢迎来到FEMON服务监控平台</h2>
+</div>
+
+<hr width="96%">
+<!--tab开始-->
+<div class="nav-guide"></div>
+#include("footer.html")
+<script>
+	$(function() {
+		initLeftNavSelection();
+	});
+
+	function initLeftNavSelection() {
+		$("#femon-home").addClass("active");
+		$("#femon-process").removeClass("active");
+		$("#femon-service").removeClass("active");
+		$("#femon-server").removeClass("active");
+		$("#femon-about").removeClass("active");
+	}
+</script>

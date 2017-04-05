@@ -1,0 +1,109 @@
+
+#include("header.html")
+<div class="nav-guide">
+    <a href="/service">服务管理</a>&nbsp;>&nbsp;创建服务
+</div>
+<hr width="96%">
+<div class="row i-create-form">
+
+    <label>服务配置</label>
+    <div class="form-group i-create-subcontent">
+        <div class="row i-create-subcontent-row form-inline" style="margin-left:0px;">
+            <label class="label-text">测试环境</label>
+            <select name="s-host" class="form-control i-create-item">
+                <option value="1" selected="selected">一套</option>
+                <option value="2">二套</option>
+            </select>
+            <input type="text" class="form-control" name="s-hostname" value="http://127.0.0.1:7001">
+        </div>
+        <div class="row i-create-subcontent-row">
+            <div class="col-sm-4">
+                <label class="label-text">服务名称</label>
+                <input type="text" class="form-control i-create-item" name="s-name">
+            </div>
+            <div class="col-sm-8">
+                <label class="label-text">URL</label>
+                <input type="text" class="form-control" name="s-url">
+            </div>
+        </div>
+
+        <div class="row i-create-subcontent-row">
+            <div class="col-sm-4">
+                <label class="label-text">请求方法</label>
+                <select name="s-method" class="form-control i-create-item">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label class="label-text">期望输出</label>
+                <input type="text" class="form-control" name="s-output" placeholder='"code":0'>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <select name="param-type" class="form-control i-create-item">
+                    <option selected="selected" value="1">普通参数</option>
+                    <option value="2">json串</option>
+                </select>
+                <textarea class="form-control" name="param-content" rows="2" placeholder='{"username":"jason","password":"123456"}'></textarea>
+            </div>
+        </div>
+
+    </div>
+    <!-- end: 服务配置 -->
+    <a class="btn btn-success" id="bt-service-new">创&nbsp;&nbsp;&nbsp;建</a>
+</div>
+#include("footer.html")
+<script type="text/javascript">
+    $(function(){
+        $("select[name='s-host']").change(function(){
+            var item = $(this).val();
+            if(item == '1'){
+                $("input[name='s-hostname']").val('http://127.0.0.1:7001');
+            }else{
+                $("input[name='s-hostname']").val('http://127.0.0.1:8080');
+            }
+        });
+
+        $("#bt-service-new").on('click', function(){
+            var host = $("input[name='s-hostname']").val();
+            var hostCode = $("select[name='s-host']").val();
+            var serviceName = $("input[name='s-name']").val();
+            var requestUrl = $("input[name='s-url']").val();
+            var requestMethod = $("select[name='s-method']").val();
+            var expectOutput = $("input[name='s-output']").val();
+
+            // 1: 普通参数  2：json串
+            var paramType = parseInt($("select[name='param-type']").val());
+            var paramContent = $("textarea[name='param-content']").val();
+            if( paramContent == ''){
+                paramType = 0;  //表示没有传参数
+            }
+
+            if( serviceName!= '' && requestUrl!='' && expectOutput!='' ) {
+                $.post("/service/new",
+                        {
+                            name: serviceName,
+                            host: host,
+                            hostCode: hostCode,
+                            requestUrl: requestUrl,
+                            expect: expectOutput,
+                            method: requestMethod,
+                            paramsType: paramType,
+                            paramsMap: paramContent
+                        },
+                        function (data) {
+                            if (data) {
+                                history.go(-1)
+                            } else {
+                                alert("Fail");
+                            }
+                        }
+                );
+            }
+        });
+    });
+</script>
+

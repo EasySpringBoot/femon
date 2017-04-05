@@ -1,0 +1,263 @@
+ #include("header.html")
+<div class="nav-guide">
+	<a href="/process">进程监控</a>&nbsp;>&nbsp;进程状态统计
+</div>
+
+<div class="form-inline" style="margin-left: 22px; margin-top: 20px;">
+	<label class="label-text">今天&nbsp;&nbsp;</label>
+</div>
+
+<hr width="96%" style="text-align: center;">
+<div class="row i-create-form">
+
+	<label style="margin-left: 20px;">数据统计结果</label>
+	<div class="form-group i-create-subcontent">
+		<table class="table serviceTable">
+			<thead>
+				<tr>
+					<th>进程名</th>
+					<th>失败时间(min)</th>
+					<th>失败次数</th>
+					<th>成功次数</th>
+					<th>1/MTBF</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>$process.name</td> #set($failTime = $!todayFail * 1)
+					<td>$!failTime</td>
+					<td>$!todayFail</td>
+					<td>$!todaySuccess</td>
+					<td>$!todayMtbf</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div id="containerDay"
+		style="min-width: 310px; height: 400px; margin: 0 auto">
+		loading...</div>
+</div>
+
+
+
+
+<div class="form-inline" style="margin-left: 22px; margin-top: 20px;">
+	<label class="label-text">本周&nbsp;&nbsp;</label>
+</div>
+
+<hr width="96%" style="text-align: center;">
+<div class="row i-create-form">
+
+	<label style="margin-left: 20px;">数据统计结果</label>
+	<div class="form-group i-create-subcontent">
+		<table class="table serviceTable">
+			<thead>
+				<tr>
+					<th>进程名</th>
+					<th>失败时间(min)</th>
+					<th>失败次数</th>
+					<th>成功次数</th>
+					<th>1/MTBF</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>$process.name</td> #set($failTime = $!weekFail * 1)
+					<td>$!failTime</td>
+					<td>$!weekFail</td>
+					<td>$!weekSuccess</td>
+					<td>$!weekMtbf</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div id="containerWeek"
+		style="min-width: 310px; height: 400px; margin: 0 auto">
+		loading...</div>
+</div>
+
+
+
+<div class="form-inline" style="margin-left: 22px; margin-top: 20px;">
+	<label class="label-text">一个月&nbsp;&nbsp;</label>
+</div>
+
+<hr width="96%" style="text-align: center;">
+<div class="row i-create-form">
+
+	<label style="margin-left: 20px;">数据统计结果</label>
+	<div class="form-group i-create-subcontent">
+		<table class="table serviceTable">
+			<thead>
+				<tr>
+					<th>进程名</th>
+					<th>失败时间(min)</th>
+					<th>失败次数</th>
+					<th>成功次数</th>
+					<th>1/MTBF</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>$process.name</td> #set($failTime = $!monthFail * 1)
+					<td>$!failTime</td>
+					<td>$!monthFail</td>
+					<td>$!monthSuccess</td>
+					<td>$!monthMtbf</td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div id="containerMonth"
+		style="min-width: 310px; height: 400px; margin: 0 auto">
+		loading...</div>
+</div>
+
+
+
+#include("footer.html")
+<script type="text/javascript">
+	//ajax调用java接口并画分布图
+	$(function() {
+		//draw state
+
+		$('#containerDay')
+				.highcharts(
+						{
+							chart : {
+								plotBackgroundColor : null,
+								plotBorderWidth : null,
+								plotShadow : false,
+								type : 'pie'
+							},
+							colors : [ '#7CB5EC', '#DE5145' ],
+							title : {
+								text : '进程状态分布图'
+							},
+							tooltip : {
+								pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+							},
+							plotOptions : {
+								pie : {
+									allowPointSelect : true,
+									cursor : 'pointer',
+									dataLabels : {
+										enabled : true,
+										format : '<b>{point.name}</b>: {point.percentage:.1f} %',
+										style : {
+											color : (Highcharts.theme && Highcharts.theme.contrastTextColor)
+													|| 'black'
+										}
+									}
+								}
+							},
+							series : [ {
+								name : '状态',
+								colorByPoint : true,
+								data : [ {
+									name : '正常',
+									y : $todaySuccess
+								}, {
+									name : '失败',
+									y : $todayFail,
+									sliced : true,
+									selected : true
+								} ]
+							} ]
+						});
+
+		$('#containerWeek')
+				.highcharts(
+						{
+							chart : {
+								plotBackgroundColor : null,
+								plotBorderWidth : null,
+								plotShadow : false,
+								type : 'pie'
+							},
+							colors : [ '#7CB5EC', '#DE5145' ],
+							title : {
+								text : '进程状态分布图'
+							},
+							tooltip : {
+								pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+							},
+							plotOptions : {
+								pie : {
+									allowPointSelect : true,
+									cursor : 'pointer',
+									dataLabels : {
+										enabled : true,
+										format : '<b>{point.name}</b>: {point.percentage:.1f} %',
+										style : {
+											color : (Highcharts.theme && Highcharts.theme.contrastTextColor)
+													|| 'black'
+										}
+									}
+								}
+							},
+							series : [ {
+								name : '状态',
+								colorByPoint : true,
+								data : [ {
+									name : '正常',
+									y : $weekSuccess
+								}, {
+									name : '失败',
+									y : $weekFail,
+									sliced : true,
+									selected : true
+								} ]
+							} ]
+						});
+
+		$('#containerMonth')
+				.highcharts(
+						{
+							chart : {
+								plotBackgroundColor : null,
+								plotBorderWidth : null,
+								plotShadow : false,
+								type : 'pie'
+							},
+							colors : [ '#7CB5EC', '#DE5145' ],
+							title : {
+								text : '进程状态分布图'
+							},
+							tooltip : {
+								pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+							},
+							plotOptions : {
+								pie : {
+									allowPointSelect : true,
+									cursor : 'pointer',
+									dataLabels : {
+										enabled : true,
+										format : '<b>{point.name}</b>: {point.percentage:.1f} %',
+										style : {
+											color : (Highcharts.theme && Highcharts.theme.contrastTextColor)
+													|| 'black'
+										}
+									}
+								}
+							},
+							series : [ {
+								name : '状态',
+								colorByPoint : true,
+								data : [ {
+									name : '正常',
+									y : $monthSuccess
+								}, {
+									name : '失败',
+									y : $monthFail,
+									sliced : true,
+									selected : true
+								} ]
+							} ]
+						});
+
+	});
+</script>
+

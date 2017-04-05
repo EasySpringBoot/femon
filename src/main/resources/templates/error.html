@@ -1,0 +1,20 @@
+#include("header.html")
+<div class="col-sm-12">
+    <h1>系统异常统一处理</h1>
+    <h3>$errorMessage></h3>
+    <h2>Debug</h2>
+    <a href="https://www.google.com/webhp?hl=zh-CN#safe=strict&hl=zh-CN&q=${errorMessage}"
+       class="btn btn-primary btn-lg" target="_blank" id="Google">Google</a>
+    <a href="https://www.baidu.com/s?wd=${errorMessage}" class="btn btn-info btn-lg" target="_blank"
+       id="Baidu">Baidu</a>
+    <a href="http://stackoverflow.com/search?q=${fn:substring(errorMessage,0,100)}"
+       class="btn btn-default btn-lg" target="_blank" id="StackOverFlow">StackOverFlow</a>
+
+    <h2>异常堆栈跟踪日志StackTrace</h2>
+    <code>
+        #foreach($line in $stackTrace)
+        $line
+        #end
+    </code>
+</div>
+#include("footer.html")

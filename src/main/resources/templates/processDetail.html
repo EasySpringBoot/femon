@@ -1,0 +1,26 @@
+#include("header.html")
+<div class="nav-guide">
+    <a href="/process">进程管理</a>&nbsp;>&nbsp;进程结果
+</div>
+<hr width="96%" style="text-align: center;">
+<div class="row i-create-form">
+    <h3 style="margin-left: 20px;">$process.name  &nbsp;&nbsp;&nbsp;$process.serverName</h3>
+    <div class="form-group i-create-subcontent" id="process-info">
+        loading...
+    </div>
+</div>
+#include("footer.html")
+<script type="text/javascript">
+    var id = parseInt($process.id);
+    $(function(){
+        $.get("/process/output/"+id,
+                function(data){
+                    $("#process-info").html('');
+                    if(data){
+                        $("#process-info").html(data);
+                    }
+                    else
+                        $("#process-info").html("没有数据");
+                });
+    });
+</script>

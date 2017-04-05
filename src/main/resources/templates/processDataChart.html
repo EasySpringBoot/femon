@@ -1,0 +1,89 @@
+#include("header.html")
+<div>
+	<h5>
+		<a href="/process">进程管理</a>
+	</h5>
+	<div id="containerProcess"
+		style="min-width: 310px; height: 400px; margin: 0 auto">
+		loading...</div>
+
+</div>
+#include("footer.html")
+<script type="text/javascript">
+	$(document).ready(function() {
+		drawState(); //initialize
+		setInterval("drawState()", 10000); //refresh
+	});
+
+	function drawState() {
+		var id = $processId;
+		var processName = "$processName";
+		var serverName = "$serverName";
+		var serverIp = "$ip";
+		var processData = [];
+
+		$
+				.get(
+						"/process/monitor/" + id,
+						function(data) {
+							$.each(data, function(key, value) {
+								var processContent = [];
+								processContent.push(value.sampleTime); //x
+								processContent.push(value.state); //y
+								processData.push(processContent);
+
+							});
+
+							$('#containerProcess')
+									.highcharts(
+											{
+												chart : {
+													type : 'areaspline' //图表类型 line, spline, area, areaspline, column, bar, pie , column，scatter
+												},
+												title : {
+													text : '进程:' + processName
+															+ '(' + serverName
+															+ '-' + serverIp
+															+ ")"
+												},
+												xAxis : {
+													categories : [],
+													title : {
+														text : ''
+													}
+												//x轴坐标标题  labels:纵柱标尺
+												},
+												yAxis : {
+													title : {
+														text : '进程状态（1 正常  0 失败）'
+													}
+												},
+
+												tooltip : {
+													pointFormat : '{series.name} 资源 <b>{point.y:,.00f}</b><br/>'
+												},
+												plotOptions : {
+													area : {
+														pointStart : 0,
+														marker : {
+															enabled : false,
+															symbol : 'circle',
+															radius : 2,
+															states : {
+																hover : {
+																	enabled : true
+																}
+															}
+														}
+													}
+												},
+												series : [ {
+													name : ' ',
+													data : processData
+												} ]
+											});
+
+						}, 'json');
+	}
+</script>
+

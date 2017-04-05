@@ -1,0 +1,196 @@
+#include("header.html")
+<div>
+	<h5>
+		<a href="/resource">资源管理</a>
+	</h5>
+	<div id="containerDisk"
+		style="min-width: 310px; height: 400px; margin: 0 auto">
+		loading...</div>
+	<div id="containerCpu"
+		style="min-width: 310px; height: 400px; margin: 0 auto">
+		loading...</div>
+	<div id="containerMem"
+		style="min-width: 310px; height: 400px; margin: 0 auto">
+		loading...</div>
+</div>
+#include("footer.html")
+<script type="text/javascript">
+	$(document).ready(function() {
+		drawState(); //initialize
+		setInterval("drawState()", 10000); //refresh
+	});
+
+	function drawState() {
+		var id = $ResourceId;
+		var serviceName = "$ResourceName";
+		var diskData = [];
+		var cpuData = [];
+		var memData = [];
+
+		$
+				.get(
+						"/resource/" + id + "/datalist",
+						function(data) {
+							$.each(data, function(key, value) {
+								var diskContent = [];
+								diskContent.push(value.sampleTime); //x
+								diskContent.push(value.diskAvail); //y
+								diskData.push(diskContent);
+
+								var cpuContent = [];
+								cpuContent.push(value.sampleTime);
+								cpuContent.push(value.cpuUsage * 100);
+								cpuData.push(cpuContent);
+
+								var memContent = [];
+								memContent.push(value.sampleTime);
+								memContent.push(value.memFree / 1024);
+								memData.push(memContent);
+
+							});
+							$('#containerDisk')
+									.highcharts(
+											{
+												chart : {
+													type : 'areaspline' //图表类型 line, spline, area, areaspline, column, bar, pie , column，scatter
+												},
+												title : {
+													text : '<b>' + serviceName
+															+ '</b>'
+												},
+												xAxis : {
+													categories : [],
+													title : {
+														text : ''
+													}
+												//x轴坐标标题  labels:纵柱标尺
+
+												},
+												yAxis : {
+													title : {
+														text : '/data 可用磁盘空间(GB)'
+													}
+												},
+
+												tooltip : {
+													pointFormat : '{series.name} 资源 <b>{point.y:,.00f}</b><br/>'
+												},
+												plotOptions : {
+													area : {
+														pointStart : 0,
+														marker : {
+															enabled : false,
+															symbol : 'circle',
+															radius : 2,
+															states : {
+																hover : {
+																	enabled : true
+																}
+															}
+														}
+													}
+												},
+												series : [ {
+													name : ' ',
+													data : diskData
+												} ]
+											});
+
+							$('#containerCpu')
+									.highcharts(
+											{
+												chart : {
+													type : 'spline' //图表类型 line, spline, area, areaspline, column, bar, pie , column，scatter
+												},
+												title : {
+													text : ''
+												},
+												xAxis : {
+													categories : [],
+													title : {
+														text : ''
+													}
+												//x轴坐标标题  labels:纵柱标尺
+
+												},
+												yAxis : {
+													title : {
+														text : 'CPU usage(%)'
+													}
+												},
+
+												tooltip : {
+													pointFormat : '{series.name} 资源 <b>{point.y:,.00f}</b><br/>'
+												},
+												plotOptions : {
+													area : {
+														pointStart : 0,
+														marker : {
+															enabled : false,
+															symbol : 'circle',
+															radius : 2,
+															states : {
+																hover : {
+																	enabled : true
+																}
+															}
+														}
+													}
+												},
+												series : [ {
+													name : ' ',
+													data : cpuData
+												} ]
+											});
+
+							$('#containerMem')
+									.highcharts(
+											{
+												chart : {
+													type : 'area' //图表类型 line, spline, area, areaspline, column, bar, pie , column，scatter
+												},
+												title : {
+													text : ''
+												},
+												xAxis : {
+													categories : [],
+													title : {
+														text : ''
+													}
+												//x轴坐标标题  labels:纵柱标尺
+
+												},
+												yAxis : {
+													title : {
+														text : '内存可用memFree(GB)'
+													}
+												},
+
+												tooltip : {
+													pointFormat : '{series.name} 资源 <b>{point.y:,.00f}</b><br/>'
+												},
+												plotOptions : {
+													area : {
+														pointStart : 0,
+														marker : {
+															enabled : false,
+															symbol : 'circle',
+															radius : 2,
+															states : {
+																hover : {
+																	enabled : true
+																}
+															}
+														}
+													}
+												},
+												series : [ {
+													name : ' ',
+													data : memData
+												} ]
+											});
+
+						}, 'json');
+	}
+</script>
+

@@ -1,0 +1,66 @@
+ #include("header.html")
+<div class="nav-guide">
+	<a href="/service">资源管理</a>&nbsp;>&nbsp;资源详情
+</div>
+<hr width="96%" style="text-align: center;">
+<div class="row i-create-form">
+	<h3 style="margin-left: 20px;">$service.name</h3>
+	<div class="form-group i-create-subcontent">
+		<table class="table serviceTable">
+			<tr>
+				<th width="160">标题</th>
+				<th>内容</th>
+			</tr>
+			<tr>
+				<td class="detail-title">测试主机</td>
+				<td>$service.host</td>
+			</tr>
+			<tr>
+				<td class="detail-title">请求URL</td>
+				<td>$service.requestUrl</td>
+			</tr>
+			<tr>
+				<td class="detail-title">请求方法</td>
+				<td>$service.method</td>
+			</tr>
+			<tr>
+				<td class="detail-title">服务状态</td>
+				<td>$service.state （1：正常，0：失败）</td>
+			</tr>
+			<tr>
+				<td class="detail-title">服务参数</td>
+				<td>$service.paramsMap</td>
+			</tr>
+
+			<tr>
+				<td class="detail-title">今天成功次数</td>
+				<td>$service.todaySuccessTimes</td>
+			</tr>
+
+			<tr>
+				<td class="detail-title">今天失败次数</td>
+				<td>$service.todayFailTimes</td>
+			</tr>
+			<tr>
+				<td class="detail-title">累积成功次数</td>
+				<td>$service.totalSuccessTimes</td>
+			</tr>
+			<tr>
+				<td class="detail-title">累积失败次数</td>
+				<td>$service.totalFailTimes</td>
+			</tr>
+			<tr>
+				<td class="detail-title">期望结果</td>
+				<td>$service.expect</td>
+			</tr>
+			<tr>
+				<td class="detail-title">实际输出</td>
+				<td><textarea class="form-control" rows="10"
+						style="width: 100%; overflow: auto; word-break: break-all;">$service.responseBody</textarea></td>
+			</tr>
+		</table>
+	</div>
+</div>
+#include("footer.html")
+
+

@@ -1,0 +1,65 @@
+#include("header.html")
+<div class="nav-guide">
+    <a href="/resource">资源管理</a>&nbsp;>&nbsp;增加监控机器
+</div>
+<hr width="96%">
+<div class="row i-create-form">
+
+    <div class="form-group i-create-subcontent">
+        <div class="row i-create-subcontent-row form-inline">
+            <div class="col-sm-4">
+                <label class="label-text">名称</label>
+                <input type="text" class="form-control i-create-item" name="r-name">
+            </div>
+            <div class="col-sm-4">
+                <label class="label-text">IP地址</label>
+                <input type="text" class="form-control" name="r-ip">
+            </div>
+        </div>
+
+        <div class="row i-create-subcontent-row form-inline">
+            <div class="col-sm-4">
+                <label class="label-text">登录用户名</label>
+                <input type="text" class="form-control" name="r-username">
+            </div>
+
+        </div>
+
+        <div class="row i-create-subcontent-row form-inline">
+            <div class="col-sm-4">
+                <label class="label-text">登录密码</label>
+                <input type="password" class="form-control" name="r-password">
+            </div>
+            <div class="col-sm-4">
+                <label class="label-text">密码确认</label>
+                <input type="password" class="form-control" name="r-confirm-password">
+            </div>
+        </div>
+
+    </div>
+    <!-- end: 服务配置 -->
+    <a class="btn btn-success" id="bt-resource-new">增&nbsp;&nbsp;&nbsp;加</a>
+</div>
+#include("footer.html")
+<script type="text/javascript">
+    $(function(){
+        $("#bt-resource-new").on('click', function(){
+            var name = $("input[name='r-name']").val();
+            var ip =  $("input[name='r-ip']").val();
+            var username = $("input[name='r-username']").val();
+            var password = $("input[name='r-password']").val();
+            var confPassword = $("input[name='r-confirm-password']").val();
+            if( name != '' && ip != '' && username != '' && password != '' && password == confPassword ){
+                $.post('/resource/new',
+                        { name:name, ip:ip, username:username, password:password },
+                        function(data){
+                            if(data)
+                                window.location.href='/resource';
+                            else
+                                alert("增加失败");
+                        }
+                );
+            }
+        });
+    });
+</script>

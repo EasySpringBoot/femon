@@ -1,0 +1,122 @@
+ 
+#include("header.html")
+<div class="nav-guide">
+    <a href="/service">服务管理</a>&nbsp;>&nbsp;服务统计
+</div>
+<div class="form-inline" style="margin-left:22px;margin-top:20px;">
+    <label class="label-text">时间&nbsp;&nbsp;</label>
+    <select name="s-host" class="form-control i-create-item">
+        <option value="1" selected="selected">今天</option>
+        <option value="2">一星期</option>
+        <option value="3">一个月</option>
+    </select>
+</div>
+
+<hr width="96%" style="text-align: center;">
+<div class="row i-create-form">
+
+    <label style="margin-left: 20px;">数据统计结果</label>
+    <div class="form-group i-create-subcontent">
+        <table class="table serviceTable">
+            <thead>
+            <tr>
+                <th width="150">服务名</th>
+                <th width="80">统计时间</th>
+                <th width="150">失败时间</th>
+                <th width="200">失败次数</th>
+                <th width="80">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>$service.name</td>
+                <td>一天</td>
+                <td id="failed-period">加载中...</td>
+                <td id="failed-value">加载中...</td>
+                <td><a href="/service/dataDetail?serviceId=$service.id">详情</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto">
+        loading...
+    </div>
+</div>
+#include("footer.html")
+<script type="text/javascript">
+    //获取当天日期
+    function myDate(){
+        var nowDate = new Date();
+        var year = nowDate.getFullYear();
+        var month = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1)
+                : nowDate.getMonth() + 1;
+        var day = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate
+                .getDate();
+        var dateStr = year + "-" + month + "-" + day;
+        return dateStr;
+    }
+
+    //ajax调用java接口并画分布图
+    $(function () {
+        var curDate = myDate();
+        var sid = parseInt($service.id);
+        $.get(  '/data/daysum',
+                {date: curDate, serviceId:sid },
+                function(data){
+                    var failedValue = data.failTimes;
+                    $("#failed-value").text(failedValue);
+                    var failedTimes = parseInt(data.failTimes);
+                    $("#failed-period").text(failedTimes.toFixed(2)+'min');
+
+                    var successValue = data.successTimes;
+
+                    //draw state
+                    $('#container').highcharts({
+                        chart: {
+                            plotBackgroundColor: null,
+                            plotBorderWidth: null,
+                            plotShadow: false,
+                            type: 'pie'
+                        },
+                        colors:[
+                            '#7CB5EC',
+                            '#DE5145'
+                        ],
+                        title: {
+                            text: '服务状态分布图'
+                        },
+                        tooltip: {
+                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                    style: {
+                                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                    }
+                                }
+                            }
+                        },
+                        series: [{
+                            name: '状态',
+                            colorByPoint: true,
+                            data: [{
+                                name: '正常',
+                                y: successValue
+                            }, {
+                                name: '失败',
+                                y: failedValue,
+                                sliced: true,
+                                selected: true
+                            }]
+                        }]
+                    });
+                },
+                'json');
+    });
+</script>
+ 

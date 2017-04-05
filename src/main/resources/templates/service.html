@@ -1,0 +1,95 @@
+#include("header.html")
+
+<div class="row">
+	<div class="col-sm-4">
+		<a href="/service/create"
+			class="btn btn-large btn-block btn-info femon-guide">创建服务</a>
+	</div>
+
+	<div class="col-sm-8 form-inline" style="text-align: right">
+		<label class="label-text">测试环境</label> <select name="s-host"
+			class="form-control i-create-item"> #if($currentHost == 1)
+			<option value="1" selected="selected">一套</option>
+			<option value="2">二套</option> #else
+			<option value="1">一套</option>
+			<option value="2" selected="selected">二套</option> #end
+		</select>
+	</div>
+</div>
+
+<hr width="96%">
+<!--tab开始-->
+<div class="form-group">
+	<table class="table table-hover femon-table">
+		<thead>
+			<tr>
+				<th width="50">编号</th>
+				<th width="80">状态</th>
+				<th width="150">服务名</th>
+				<th width="200">测试域名</th>
+				<th width="200">期望输出</th>
+				<th width="80">详情</th>
+				<th width="120" colspan="2">数据统计</th>
+				<th width="80">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#set($count = $currentPage*10) #foreach ($c in $serviceList)
+			#set($count = $!count + 1) #set($output = $c.expect)
+			<tr>
+				<td>$count</td> #if($c.state==1)
+				<td><p class="btn btn-success">正常</p></td> #else
+				<td><p class="btn btn-danger">失败</p></td> #end
+				<td>$!c.name</td>
+				<td>$!c.host</td> #if ( $output.length() < 20 )
+				<td>$output</td> #else #set($outputMin = $output.substring(0, 20))
+				<td>$outputMin...</td> #end
+				<td><a href="/service/detail?serviceId=$c.id"
+					class="btn btn-primary">查看</a></td>
+				<td><a href="/serviceHistoryChart/$c.id">监控</a></td>
+				<td><a href="/service/data?serviceId=$c.id">统计</a></td>
+				<td><a href="/service/editPage?serviceId=$c.id">编辑</a></td>
+			</tr>
+			<div id="output-content$c.id" style="display: none;"></div>
+			#end
+		</tbody>
+	</table>
+</div>
+
+
+
+<!--begin:分页-->
+<div class="pagination" style="margin-left: 15px">
+	#set($prePage = $currentPage-1) #set($nextPage = $currentPage+1)
+	<ul>
+		<li><a href="/service?page=$prePage">Prev</a></li> #foreach($pageIndex
+		in $pageIndexList) #set($displayName = $pageIndex + 1) #if( $pageIndex
+		== $currentPage )
+		<li><a href="/service?page=$pageIndex">$displayName</a></li> #else
+		<li><a href="/service?page=$pageIndex">$displayName</a></li> #end #end
+
+		<li><a href="/service?page=$nextPage">Next</a></li>
+
+	</ul>
+</div>
+
+
+<!--end:分页-->
+
+#include("footer.html")
+<script>
+	$(function() {
+		initLeftNavSelection();
+		$("select[name='s-host']").change(function() {
+			var host = $(this).val();
+			window.location.href = '/service/?hostCode=' + host;
+		});
+	});
+
+	function initLeftNavSelection() {
+		$("#femon-home").removeClass("active");
+		$("#femon-process").removeClass("active");
+		$("#femon-server").removeClass("active");
+		$("#femon-service").addClass("active");
+	}
+</script>

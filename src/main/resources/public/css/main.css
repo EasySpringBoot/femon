@@ -1,0 +1,292 @@
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+	padding-top: 50px;
+}
+
+/*
+ * Global add-ons
+ */
+.sub-header {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #eee;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+	border: 0;
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+	display: none;
+}
+
+@media ( min-width : 768px) {
+	.sidebar {
+		position: fixed;
+		top: 51px;
+		bottom: 0;
+		left: 0;
+		z-index: 1000;
+		display: block;
+		padding: 20px;
+		overflow-x: hidden;
+		overflow-y: auto;
+		/* Scrollable contents if viewport is shorter than content. */
+		background-color: #f5f5f5;
+		border-right: 1px solid #eee;
+	}
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+	margin-right: -21px; /* 20px padding + 1px border */
+	margin-bottom: 20px;
+	margin-left: -20px;
+}
+
+.nav-sidebar>li>a {
+	padding-right: 20px;
+	padding-left: 20px;
+}
+
+.nav-sidebar>.active>a, .nav-sidebar>.active>a:hover, .nav-sidebar>.active>a:focus
+	{
+	color: #fff;
+	background-color: #428bca;
+}
+
+/*
+ * Main content
+ */
+.main {
+	padding: 20px;
+}
+
+@media ( min-width : 768px) {
+	.main {
+		margin-left: 160px;
+		padding-right: 40px;
+		padding-left: 10px;
+	}
+}
+
+.main .page-header {
+	margin-top: 0;
+}
+
+/*
+ * Placeholder dashboard ideas
+ */
+.placeholders {
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+.placeholders h4 {
+	margin-bottom: 0;
+}
+
+.placeholder {
+	margin-bottom: 20px;
+}
+
+.placeholder img {
+	display: inline-block;
+	border-radius: 50%;
+}
+/*
+ added by boshu
+ */
+.nav-monitor-default {
+	background-color: #f3f3f3;
+}
+
+.nav-text {
+	font-size: 18px;
+	color: #000;
+}
+
+.nav-guide {
+	margin-left: 20px;
+	margin-top: 20px;
+	height: 30px;
+}
+
+.btn-right {
+	margin-left: 60px;
+	margin-right: 60px;
+	text-align: right;
+}
+
+.i-create-maincontent {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.i-create-form {
+	margin-left: 60px;
+	margin-right: 60px;
+	margin-bottom: 30px;
+}
+
+.label-text {
+	font-weight: normal;
+	color: #000;
+}
+
+.i-create-subcontent {
+	margin-bottom: 30px;
+	padding: 20px;
+}
+
+.i-create-page {
+	margin-left: 30px;
+	margin-top: -10px;
+	margin-bottom: 20px;
+}
+
+.i-create-subcontent-row {
+	margin-bottom: 5px;
+}
+
+.i-create-item {
+	margin-right: 10px;
+	width: 200px;
+}
+
+.i-create-param {
+	width: 800px;
+}
+
+#a-create-assert-general {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	width: 300px;
+}
+
+#a-create-assert-json {
+	display: none;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	width: 400px;
+}
+
+.counter-up {
+	font-size: 60px;
+	display: block;
+	font-family: OpenSansLight, sans-serif;
+}
+
+p {
+	font-size: 22px;
+}
+
+.overall-info, .btn-i-search {
+	text-align: center;
+}
+
+.navbar-wac-top {
+	background-color: #299FD9;
+}
+
+.navbar-inverse .navbar-brand {
+	color: #ffffff;
+	font-weight: bold;
+	font-size: 26px;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+	color: #ffffff;
+	font-size: 20px;
+}
+
+.text-muted {
+	display: block;
+	font-size: 26px;
+	font-weight: bold;
+}
+
+.global-img {
+	width: 160px;
+	height: 160px;
+}
+
+.product-item-selected {
+	background-color: #eee;
+}
+
+.btn-wac-size {
+	width: 120px;
+}
+
+.input-param {
+	text-align: left;
+	border: 1px solid #CCC;
+	height: 34px;
+	width: 200px;
+	border-radius: 5px;
+	font-size: .98em;
+	margin-right: 6px;
+}
+
+button {
+	border: 0;
+	border-radius: 4px;
+	outline: 0;
+	cursor: pointer;
+}
+
+.WCursor {
+	cursor: pointer;
+}
+
+.wac-dialog {
+	width: 500px;
+}
+
+.i-item-rel {
+	width: 200px;
+	margin-bottom: 40px;
+}
+
+.i-item-rel a {
+	margin-left: 30px;
+}
+
+.page-select {
+	background-color: #2aabd2;
+}
+
+.serviceTable {
+	table-layout: fixed;
+	width: 98%;
+	border: 0px;
+	margin: 0px;
+}
+
+.detail-title {
+	color: #1abc9c;
+}
+
+.femon-guide {
+	width: 200px;
+	margin-left: 30px;
+}
+
+.femon-table {
+	table-layout: fixed;
+	word-break: break-all;
+	margin-left: 20px;
+}

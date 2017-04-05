@@ -1,0 +1,50 @@
+ 
+#include("header.html")
+<div class="nav-guide">
+    <a href="/service">服务管理</a>&nbsp;>&nbsp;<a href="/service/data?serviceId=$service.id">服务统计</a>&nbsp;>&nbsp;失败详情
+</div>
+<hr width="96%" style="text-align: center;">
+<div class="row i-create-form">
+    <h3 style="margin-left: 20px;">$service.name</h3>
+    <div class="form-group i-create-subcontent">
+        <table class="table serviceTable">
+            <thead>
+                <tr>
+                    <th width="80">编号</th>
+                    <th width="200">失败时间</th>
+                    <th width="300">实际输出</th>
+                </tr>
+            </thead>
+            <tbody>
+            #set($count = $currentPage*10 )
+            #foreach ($f in $serviceFailList)
+            #set($count = $count + 1)
+                <tr>
+                    <td>$count</td>
+                    <td>$f.sampleTime</td>
+                    <td><textarea class="form-control" rows="10">$f.responseBody</textarea></td>
+                </tr>
+            #end
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--begin:分页-->
+<div class="i-create-page" style="margin-left:80px;">
+    <ul class="pagination">
+        #foreach($pageIndex in $pageIndexList)
+        #set($displayName = $pageIndex + 1)
+            #if( $pageIndex == $currentPage )
+                <li>
+                    <a style="background-color: #2aabd2; color: #ffffff;"
+                       href="/service/dataDetail?serviceId=$service.id&page=$pageIndex">$displayName</a>
+                </li>
+            #else
+                <li><a href="/service/dataDetail?serviceId=$service.id&page=$pageIndex">$displayName</a></li>
+            #end
+        #end
+    </ul>
+</div>
+<!--end:分页-->
+ 
+#include("footer.html")

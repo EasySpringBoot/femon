@@ -1,0 +1,27 @@
+#include("header.html")
+<div class="nav-guide">
+    <a href="/resource">资源管理</a>&nbsp;>&nbsp;资源详情
+</div>
+<hr width="96%" style="text-align: center;">
+<div class="row i-create-form">
+    <h3 style="margin-left: 20px;">$resource.name  &nbsp;&nbsp;&nbsp; $resource.ip</h3>
+    <div class="form-group i-create-subcontent" id="resource-info">
+        loading...
+    </div>
+</div>
+#include("footer.html")
+<script type="text/javascript">
+    var id = $resource.id;
+    $(function(){
+        $.get('/resource/info',
+              {resourceId:id},
+              function(data){
+                  $("#resource-info").html('');
+                if(data){
+                	$("#resource-info").html(data);
+                }
+                else
+                    $("#resource-info").html("没有数据");
+              });
+    });
+</script>
